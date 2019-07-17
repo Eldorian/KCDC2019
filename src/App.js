@@ -23,7 +23,10 @@ function App() {
   function saveSession(event) {
     event.preventDefault();
     //assign an id on the client
-    const newSession = { ...session, id: Math.random() };
+    const newSession = {
+      ...session,
+      id: Math.random()
+    };
     setSessions([...sessions, newSession]);
   }
 
@@ -38,7 +41,7 @@ function App() {
 
   function onChange(event) {
     //use event.target.value to update session.title in state
-    const newSession = { ...session, title: event.target.title }; //copy session (spread syntax) and set value to the title
+    const newSession = { ...session, title: event.target.value }; //copy session (spread syntax) and set value to the title
     setSession(newSession);
   }
 
