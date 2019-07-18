@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getSessions } from "./api/sessionApi";
+import TextInput from "./TextInput";
+
+const newSession = {
+  id: null,
+  title: ""
+};
 
 function App() {
   //this will hold our form data
-  const [session, setSession] = useState({
-    id: null,
-    title: ""
-  });
+  const [session, setSession] = useState(newSession);
   //const state = useState[];
   //const session = useState[0];
   //const setSessions = userState[1];
@@ -15,6 +19,10 @@ function App() {
     { id: 3, title: "Python" }
   ]);
 
+  useEffect(() => {
+    getSessions().then(sessions => setSessions(sessions));
+  }, []);
+
   function deleteSession(id) {
     const newSessions = sessions.filter(session => session.id !== id);
     setSessions(newSessions);
@@ -23,11 +31,14 @@ function App() {
   function saveSession(event) {
     event.preventDefault();
     //assign an id on the client
-    const newSession = {
+    const sessionToSave = {
       ...session,
       id: Math.random()
     };
-    setSessions([...sessions, newSession]);
+    setSessions([...sessions, sessionToSave]);
+
+    //clear out the form
+    setSession(newSession);
   }
 
   function renderSession(session) {
@@ -45,6 +56,7 @@ function App() {
     setSession(newSession);
   }
 
+  //JSON-server on GITHUB for mock data
   //mdn array (google search) - mdn docs for javascript
   //alt+arrow = moving line of code
   //shift+ctrl+click = adding text on multiple lines in a spot where you clicked
@@ -56,11 +68,12 @@ function App() {
       <h1>KCDC Sessions</h1>
       <form onSubmit={saveSession}>
         <h2>Add Session</h2>
-        <div>
-          <label htmlFor="title">Title</label>
-          <br />
-          <input type="text" onChange={onChange} id="title" />
-        </div>
+        <TextInput
+          id="title"
+          onChange={onChange}
+          label="Title"
+          value={session.title}
+        />
         <input type="submit" value="Add Session" />
       </form>
       <ul>{sessions.map(renderSession)}</ul>
