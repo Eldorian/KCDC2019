@@ -13,11 +13,7 @@ function App() {
   //const state = useState[];
   //const session = useState[0];
   //const setSessions = userState[1];
-  const [sessions, setSessions] = useState([
-    { id: 1, title: "React" },
-    { id: 2, title: "C#" },
-    { id: 3, title: "Python" }
-  ]);
+  const [sessions, setSessions] = useState([]);
 
   useEffect(() => {
     getSessions().then(sessions => setSessions(sessions));
